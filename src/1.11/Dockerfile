@@ -1,8 +1,15 @@
 FROM debian:latest
 
-# Update the system and install beanstalkd
 RUN apt-get update \
- && apt-get install -y beanstalkd
+ && apt-get install -y wget make gcc
+
+RUN wget https://github.com/beanstalkd/beanstalkd/archive/v1.11.tar.gz \
+ && gunzip v1.11.tar.gz \
+ && tar -xvf v1.11.tar \
+ && rm v1.11.tar \
+ && cd beanstalkd-1.11 \
+ && make \
+ && make install PREFIX=/usr
 
 # Expose the port so that connections can be made
 EXPOSE 11300
