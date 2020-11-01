@@ -1,13 +1,14 @@
 FROM debian:latest
 
-RUN apt-get update \
- && apt-get install -y wget make gcc
+ENV BEANSTALKD_VERSION="1.11"
 
-RUN wget https://github.com/beanstalkd/beanstalkd/archive/v1.11.tar.gz \
- && gunzip v1.11.tar.gz \
- && tar -xvf v1.11.tar \
- && rm v1.11.tar \
- && cd beanstalkd-1.11 \
+RUN apt-get update \
+ && apt-get install -y wget make gcc \
+ && wget https://github.com/beanstalkd/beanstalkd/archive/v$BEANSTALKD_VERSION.tar.gz \
+ && gunzip "v$BEANSTALKD_VERSION.tar.gz" \
+ && tar -xvf v"$BEANSTALKD_VERSION".tar \
+ && rm v"$BEANSTALKD_VERSION".tar \
+ && cd beanstalkd-"$BEANSTALKD_VERSION" \
  && make \
  && make install PREFIX=/usr
 

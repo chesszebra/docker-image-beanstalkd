@@ -1,6 +1,6 @@
 FROM debian:latest
 
-ENV BEANSTALKD_VERSION="1.10"
+ENV BEANSTALKD_VERSION="1.12"
 
 RUN apt-get update \
  && apt-get install -y wget make gcc \

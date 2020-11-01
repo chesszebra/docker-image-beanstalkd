@@ -1,0 +1,69 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  build-1.10:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build
+        run: |
+          VERSION=1.10
+          IMAGE_NAME="chesszebra/$(echo "$GITHUB_REPOSITORY" | cut -c 25-):${VERSION}"
+          cd src/$VERSION
+          docker build -t $IMAGE_NAME .
+          docker push $IMAGE_NAME
+
+  build-1.11:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build
+        run: |
+          VERSION=1.11
+          IMAGE_NAME="chesszebra/$(echo "$GITHUB_REPOSITORY" | cut -c 25-):${VERSION}"
+          cd src/$VERSION
+          docker build -t $IMAGE_NAME .
+          docker push $IMAGE_NAME
+
+  build-1.12:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build
+        run: |
+          VERSION=1.10
+          IMAGE_NAME="chesszebra/$(echo "$GITHUB_REPOSITORY" | cut -c 25-):${VERSION}"
+          IMAGE_NAME_LATEST="chesszebra/$(echo "$GITHUB_REPOSITORY" | cut -c 25-):latest"
+          cd src/$VERSION
+          docker build -t $IMAGE_NAME -t $IMAGE_NAME_LATEST .
+          docker push $IMAGE_NAME
+          docker push $IMAGE_NAME_LATEST
